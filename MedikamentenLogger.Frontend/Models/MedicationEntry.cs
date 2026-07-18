@@ -1,0 +1,2 @@
+namespace MedikamentenLogger.Frontend.Models;
+

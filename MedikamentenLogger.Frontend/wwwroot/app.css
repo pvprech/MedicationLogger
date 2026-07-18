@@ -27,3 +27,37 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+:root {
+    /* Personal Variables */
+    --background: #1B263B;
+    --surface: #243447;
+    --surface-hover: #2E435D;
+    --border: #3D5675;
+
+    --text: aliceblue;
+    --text-secondary: #B8C7D9;
+
+    --primary: #4F9CF9;
+    --primary-hover: #60A5FA;
+    --secondary: #4686d3;
+
+    --success: #22C55E;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+
+    --shadow: rgba(0, 0, 0, 0.25);
+
+    /* Bootstrap Variables */
+    --bs-body-bg: var(--background);
+    --bs-body-color: var(--text);
+    --bs-primary: var(--primary);
+    --bs-border-color: var(--border);
+}
+
+body {
+    background: var(--background) !important;
+    color: var(--text) !important;
+    max-width: 430px !important;
+    margin: 0 auto !important;
+}
