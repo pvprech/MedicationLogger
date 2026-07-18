@@ -1,16 +1,69 @@
 ﻿@page "/"
+@using Models
+@rendermode InteractiveServer
 
 <PageTitle>Medications</PageTitle>
 
-<button class="mt-5">
-    <div class="w-75 mx-auto rounded-4 medication">
-        <h1 class="ms-2 h-25">Kinecteen 18mg</h1>
+
+@foreach (var entry in entries)
+{
+    <div class="w-75 mx-auto rounded-4 medication mt-5 mb-5"
+        @onclick="() => OpenMedication(entry)">
+
+        <h1 class="ms-2 h-25">@entry.Name</h1>
         <div class="d-flex">
-            <img src="images/Kinecteen.webp" alt="Kinecteen" class="w-25 ms-2 mb-2 rounded-3">
-            <p class="w-50 ms-2 d-inline mb-2"">
-                ADHS-Medikation mit 18mg Methylphenidathydrochlorid als aktiver Wirkstoff. 
-                Plateu-Präperat mit einer erwarteten Wirkdauer von 10h.
-            </p>
+            <img src="@entry.ImagePath" alt="@entry.Name" class="w-25 ms-2 mb-2 rounded-3">
+            <p class="w-50 ms-2 d-inline mb-2">@entry.Description</p>
         </div>
     </div>
-</button>
+}
+
+@code {
+    Medication[] entries = 
+    {
+        new Medication {
+            Id = 1,
+            Name = "Kinecteen 18mg",
+            Description = "ADHS-Medikation mit 18mg Methylphenidathydrochlorid als aktiver Wirkstoff." +
+                            "Plateu-Präperat mit einer erwarteten Wirkdauer von 10h.",
+            ImagePath = "images/Kinecteen.webp"
+        },
+
+        new Medication
+        {
+            Id = 2,
+            Name = "Ritalin",
+            Description = "Methylphenidat-Präparat zur Behandlung von ADHS. Wirkt unretardiert mit kürzerer Wirkdauer und schnellerem Wirkungseintritt.",
+            ImagePath = "images/Ritalin.webp"
+        },
+
+        new Medication
+        {
+            Id = 3,
+            Name = "Elvanse",
+            Description = "ADHS-Medikation mit Lisdexamfetamin als Wirkstoff. Wird im Körper zu Dexamfetamin umgewandelt und wirkt über mehrere Stunden.",
+            ImagePath = "images/Elvanse.webp"
+        },
+
+        new Medication
+        {
+            Id = 4,
+            Name = "Ibuprofen",
+            Description = "Schmerz- und entzündungshemmendes Medikament aus der Gruppe der nichtsteroidalen Antirheumatika.",
+            ImagePath = "images/Ibuprofen.webp"
+        },
+
+        new Medication
+        {
+            Id = 5,
+            Name = "Magnesiumcitrat",
+            Description = "Nahrungsergänzungsmittel mit Magnesium zur Unterstützung der normalen Muskelfunktion und des Elektrolythaushalts.",
+            ImagePath = "images/Magnesiumcitrat.webp"
+        }
+    };
+
+    void OpenMedication(Medication entry)
+    {
+        Console.WriteLine(entry.Name);
+    }
+}
