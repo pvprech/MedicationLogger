@@ -1,69 +1,35 @@
 ﻿@page "/"
 @using Models
+@using Clients
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager
 
 <PageTitle>Medications</PageTitle>
 
 
-@foreach (var entry in entries)
+@foreach (var card in cards)
 {
-    <div class="w-75 mx-auto rounded-4 medication mt-5 mb-5" @onclick="() => OpenMedication(entry)">
+    <div class="w-75 mx-auto rounded-4 medication mt-5 mb-5" @onclick="() => OpenMedication(card)">
 
-        <h1 class="ms-2 h-25">@entry.Name</h1>
+        <h1 class="ms-2 h-25">@card.Name</h1>
         <div class="d-flex">
-            <img src="@entry.ImagePath" alt="@entry.Name" class="w-25 ms-2 mb-2 rounded-3">
-            <p class="w-50 ms-2 d-inline mb-2">@entry.Description</p>
+            <img src="@card.ImagePath" alt="@card.Name" class="w-25 ms-2 mb-2 rounded-3">
+            <p class="w-50 ms-2 d-inline mb-2">@card.Description</p>
         </div>
     </div>
 }
 
 @code {
-    MedicationCard[] entries =
+    private MedicationCardService cardService = new MedicationCardService();
+    private MedicationCard[] cards = Array.Empty<MedicationCard>();
+
+    protected override void OnInitialized()
     {
-        new MedicationCard {
-            Id = 1,
-            Name = "Kinecteen 18mg",
-            Description = "ADHS-Medikation mit 18mg Methylphenidathydrochlorid als aktiver Wirkstoff." +
-                            "Plateu-Präperat mit einer erwarteten Wirkdauer von 10h.",
-            ImagePath = "images/Kinecteen.webp"
-        },
+        cards = cardService.GetMedicationCards();
+    }
 
-        new MedicationCard
-        {
-            Id = 2,
-            Name = "Ritalin",
-            Description = "Methylphenidat-Präparat zur Behandlung von ADHS. Wirkt unretardiert mit kürzerer Wirkdauer und schnellerem Wirkungseintritt.",
-            ImagePath = "images/Ritalin.webp"
-        },
-
-        new MedicationCard
-        {
-            Id = 3,
-            Name = "Elvanse",
-            Description = "ADHS-Medikation mit Lisdexamfetamin als Wirkstoff. Wird im Körper zu Dexamfetamin umgewandelt und wirkt über mehrere Stunden.",
-            ImagePath = "images/Elvanse.webp"
-        },
-
-        new MedicationCard
-        {
-            Id = 4,
-            Name = "Ibuprofen",
-            Description = "Schmerz- und entzündungshemmendes Medikament aus der Gruppe der nichtsteroidalen Antirheumatika.",
-            ImagePath = "images/Ibuprofen.webp"
-        },
-
-        new MedicationCard
-        {
-            Id = 5,
-            Name = "Magnesiumcitrat",
-            Description = "Nahrungsergänzungsmittel mit Magnesium zur Unterstützung der normalen Muskelfunktion und des Elektrolythaushalts.",
-            ImagePath = "images/Magnesiumcitrat.webp"
-        }
-    };
-
-    void OpenMedication(MedicationCard entry)
+    void OpenMedication(MedicationCard card)
     {
-        NavigationManager.NavigateTo($"medication/{entry.Id}");
+        NavigationManager.NavigateTo($"medication/{card.Id}");
     }
 }
