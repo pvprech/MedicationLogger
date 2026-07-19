@@ -1,6 +1,6 @@
 namespace MedikamentenLogger.Frontend.Models;
 
-public class Medication
+public class MedicationCard
 {
     public int Id { get; set; }
     public required string Name { get; set; }

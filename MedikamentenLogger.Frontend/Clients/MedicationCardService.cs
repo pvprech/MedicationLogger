@@ -1,26 +1,11 @@
-﻿@page "/"
-@using Models
-@rendermode InteractiveServer
-@inject NavigationManager NavigationManager
+using MedikamentenLogger.Frontend.Models;
 
-<PageTitle>Medications</PageTitle>
+namespace MedikamentenLogger.Frontend.Clients;
 
-
-@foreach (var entry in entries)
+public class MedicationCardService
 {
-    <div class="w-75 mx-auto rounded-4 medication mt-5 mb-5" @onclick="() => OpenMedication(entry)">
-
-        <h1 class="ms-2 h-25">@entry.Name</h1>
-        <div class="d-flex">
-            <img src="@entry.ImagePath" alt="@entry.Name" class="w-25 ms-2 mb-2 rounded-3">
-            <p class="w-50 ms-2 d-inline mb-2">@entry.Description</p>
-        </div>
-    </div>
-}
-
-@code {
-    MedicationCard[] entries =
-    {
+    private readonly List<MedicationCard> cards =
+    [
         new MedicationCard {
             Id = 1,
             Name = "Kinecteen 18mg",
@@ -60,10 +45,26 @@
             Description = "Nahrungsergänzungsmittel mit Magnesium zur Unterstützung der normalen Muskelfunktion und des Elektrolythaushalts.",
             ImagePath = "images/Magnesiumcitrat.webp"
         }
-    };
+    ];
 
-    void OpenMedication(MedicationCard entry)
+    public MedicationCard[] GetMedicationCards()
     {
-        NavigationManager.NavigateTo($"medication/{entry.Id}");
+        return [.. cards];
+    }
+
+    public MedicationCard? GetMedicationCardByID(int id)
+    {
+        return cards.FirstOrDefault(x => x.Id == id);
+    }
+
+    public void AddMedicationCard(MedicationCard card)
+    {
+        card.Id = cards.Any() ? cards.Max(x => x.Id) + 1 : 1;
+        cards.Add(card);
+    }
+
+    public void DeleteMedicationCardById(int id)
+    {
+        cards.RemoveAll(x => x.Id == id);
     }
 }
