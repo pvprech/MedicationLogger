@@ -5,6 +5,7 @@
 @using Models
 
 @inject MedicationCardService CardService
+@inject NavigationManager NavigationManager
 
 @if (card == null)
 {
@@ -12,7 +13,7 @@
 }
 else
 {
-    <div class="text-center my-4">
+    <div class="text-center mt-5">
         <h1>@card.Name</h1>
     </div>
 
@@ -39,7 +40,14 @@ else
             <div class="drum-sep"></div>
 
         </div>
+    </div>
 
+    <div class="createBtn">
+        <h3>+</h3>
+    </div>
+
+    <div class="backBtn" @onclick="() => ToHomePage()">
+        <h3>&lt;</h3>
     </div>
 }
 
@@ -51,5 +59,10 @@ else
     protected override void OnInitialized()
     {
         card = CardService.GetMedicationCardByID(Id);
+    }
+
+    private void ToHomePage()
+    {
+        NavigationManager.NavigateTo("/");
     }
 }
