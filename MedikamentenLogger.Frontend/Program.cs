@@ -8,6 +8,8 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddSingleton<MedicationCardService>();
+builder.Services.AddSingleton<MedicationEntryService>();
+builder.Services.AddSingleton<StarRatingService>();
 
 var app = builder.Build();
 

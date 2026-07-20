@@ -9,7 +9,7 @@ h1 {
     background: var(--surface, #18181b);
     border-radius: 20px;
     padding: 24px;
-    width: 50%;
+    width: 250px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -42,7 +42,7 @@ h2 {
 }
 
 .drum-col {
-    width: 40% !important;
+    width: 60% !important;
     height: 220px !important;
     overflow-y: scroll !important;
     scroll-snap-type: y mandatory;

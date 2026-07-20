@@ -1,0 +1,31 @@
+@using MedikamentenLogger.Frontend.Models
+@using MedikamentenLogger.Frontend.Clients
+
+@inject MedicationEntryService MedicationEntryService
+@inject NavigationManager NavigationManager
+
+@page "/medication/entry/{Id:int}"
+
+@if (entry == null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>@entry.Id</h1>
+    <h1>@entry.Date.ToString("dd.MM.yyyy")</h1>
+    <h1>@entry.GeneralEffectiveness</h1>
+    <h1>@entry.GeneralSideEffects</h1>
+    <h1>@entry.UserNote</h1>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+
+    private MedicationEntry? entry;
+
+    protected override void OnInitialized()
+    {
+        entry = MedicationEntryService.GetMedicationEntryByID(Id);
+    }
+}
