@@ -1,14 +1,7 @@
 .medication {
-    background-color: var(--secondary);
+    background-color: var(--surface);
 }
 
 p {
     font-size: x-small;
-}
-
-button {
-    background-color: var(--background);
-    border: none;
-    color: var(--text);
-    text-align: left;
 }

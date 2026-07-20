@@ -1,8 +1,11 @@
-﻿@page "/"
-@using Models
+﻿@using Models
 @using Clients
-@rendermode InteractiveServer
+
 @inject NavigationManager NavigationManager
+@inject MedicationCardService CardService
+
+@rendermode InteractiveServer
+@page "/"
 
 <PageTitle>Medications</PageTitle>
 
@@ -20,12 +23,12 @@
 }
 
 @code {
-    private MedicationCardService cardService = new MedicationCardService();
+
     private MedicationCard[] cards = Array.Empty<MedicationCard>();
 
     protected override void OnInitialized()
     {
-        cards = cardService.GetMedicationCards();
+        cards = CardService.GetMedicationCards();
     }
 
     void OpenMedication(MedicationCard card)

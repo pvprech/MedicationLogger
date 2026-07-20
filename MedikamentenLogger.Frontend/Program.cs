@@ -1,3 +1,4 @@
+using MedikamentenLogger.Frontend.Clients;
 using MedikamentenLogger.Frontend.Components;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -5,6 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+builder.Services.AddSingleton<MedicationCardService>();
 
 var app = builder.Build();
 
@@ -21,5 +24,5 @@ app.UseAntiforgery();
 
 app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
-    
+
 app.Run();

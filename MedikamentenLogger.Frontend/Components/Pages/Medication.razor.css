@@ -1,0 +1,107 @@
+h1 {
+    display: inline-block;
+    background-color: var(--surface, #1e1e24);
+    padding: 1rem;
+    border-radius: 999px;
+}
+
+.card {
+    background: var(--surface, #18181b);
+    border-radius: 20px;
+    padding: 24px;
+    width: 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 0 auto;
+    color: var(--text, #ffffff);
+}
+
+h2 {
+    font-size: 14px;
+    color: var(--text, #ffffff);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.drum {
+    position: relative;
+    height: 220px;
+    display: flex !important;
+    flex-direction: row !important;
+    background: var(--second-surface, #09090b);
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+/* WICHTIG: .drum-col statt .col, damit Bootstrap das Layout nicht zerstört! */
+.drum-col {
+    flex: 1 1 0% !important;
+    width: 33.33% !important;
+    height: 220px !important;
+    overflow-y: scroll !important;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+}
+
+.drum-col::-webkit-scrollbar {
+    display: none;
+}
+
+.drum-sep {
+    width: 1px !important;
+    height: 100% !important;
+    background: #7b94b452;
+    z-index: 3;
+    flex-shrink: 0;
+}
+
+.drum::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    top: 88px;
+    height: 44px;
+    background: rgba(79, 140, 255, 0.12);
+    border: 1px solid rgba(79, 140, 255, 0.35);
+    border-radius: 8px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.drum::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom,
+            var(--second-surface, #09090b) 0%,
+            transparent 88px,
+            transparent 132px,
+            var(--second-surface, #09090b) 100%);
+    pointer-events: none;
+    z-index: 2;
+    border-radius: 14px;
+}
+
+.wheel-item {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* ALLE Items haben jetzt dauerhaft den "Highlight"-Look */
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text, #ffffff);
+
+    cursor: pointer;
+    scroll-snap-align: center;
+    user-select: none;
+}
+
+.wheel-spacer {
+    height: 88px;
+    flex-shrink: 0;
+}

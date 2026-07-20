@@ -59,7 +59,7 @@ public class MedicationCardService
 
     public void AddMedicationCard(MedicationCard card)
     {
-        card.Id = cards.Any() ? cards.Max(x => x.Id) + 1 : 1;
+        card.Id = cards.Count > 0 ? cards.Max(x => x.Id) + 1 : 1;
         cards.Add(card);
     }
 
