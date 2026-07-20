@@ -8,7 +8,7 @@
 
 @if (card == null)
 {
-    <p class="text-center mt-5">Loading Medication...</p>
+    <p>Loading Medication...</p>
 }
 else
 {
@@ -17,68 +17,29 @@ else
     </div>
 
     <div class="card">
-        <h2 class="text-center mb-2">Select Date</h2>
+        <h2 class="text-center mb-2">Select Day</h2>
 
-        <!-- Live Preview -->
-        <div class="text-center my-3">
-            <span class="badge bg-primary fs-5">
-                @months[pickedMonth] @((pickedDay + 1).ToString("D2")), @years[pickedYear]
-            </span>
-        </div>
-
-        <!-- Pure Blazor Drum Wheel -->
         <div class="drum">
 
-            <!-- MONTH -->
-            <div class="drum-col">
-                <div class="wheel-spacer"></div>
-                @for (int i = 0; i < months.Length; i++)
-                {
-                    int index = i;
-                    <div class="wheel-item @(index == pickedMonth ? "selected" : "")" @onclick="() => OnMonthSelect(index)">
-                        @months[index]
-                    </div>
-                }
-                <div class="wheel-spacer"></div>
-            </div>
-
-            <!-- Separator-Linie -->
             <div class="drum-sep"></div>
 
-            <!-- DAY -->
             <div class="drum-col">
                 <div class="wheel-spacer"></div>
-                @for (int i = 0; i < DaysInCurrentMonth; i++)
+                @for (int i = 0; i < 30; i++)
                 {
                     int index = i;
-                    <div class="wheel-item @(index == pickedDay ? "selected" : "")" @onclick="() => OnDaySelect(index)">
+                    <div class="wheel-item">
                         @((index + 1).ToString("D2"))
                     </div>
                 }
                 <div class="wheel-spacer"></div>
+
             </div>
 
-            <!-- Separator-Linie -->
             <div class="drum-sep"></div>
-
-            <!-- YEAR -->
-            <div class="drum-col">
-                <div class="wheel-spacer"></div>
-                @for (int i = 0; i < years.Length; i++)
-                {
-                    int index = i;
-                    <div class="wheel-item @(index == pickedYear ? "selected" : "")" @onclick="() => OnYearSelect(index)">
-                        @years[index]
-                    </div>
-                }
-                <div class="wheel-spacer"></div>
-            </div>
 
         </div>
 
-        <button class="btn btn-primary w-100 mt-4 py-2 fw-bold" @onclick="ConfirmDate">
-            Confirm Date
-        </button>
     </div>
 }
 
@@ -87,50 +48,8 @@ else
 
     private MedicationCard? card;
 
-    private static readonly string[] months = new[] { "JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT",
-"NOV", "DEC" };
-    private static readonly int[] years = Enumerable.Range(1930, 171).ToArray();
-
-    private int pickedMonth = DateTime.Now.Month - 1;
-    private int pickedDay = DateTime.Now.Day - 1;
-    private int pickedYear = Array.IndexOf(years, DateTime.Now.Year);
-
-    private int DaysInCurrentMonth => DateTime.DaysInMonth(years[pickedYear], pickedMonth + 1);
-
     protected override void OnInitialized()
     {
         card = CardService.GetMedicationCardByID(Id);
-    }
-
-    private void OnMonthSelect(int index)
-    {
-        pickedMonth = index;
-        ValidateDay();
-    }
-
-    private void OnDaySelect(int index)
-    {
-        pickedDay = index;
-    }
-
-    private void OnYearSelect(int index)
-    {
-        pickedYear = index;
-        ValidateDay();
-    }
-
-    private void ValidateDay()
-    {
-        int maxDays = DaysInCurrentMonth;
-        if (pickedDay >= maxDays)
-        {
-            pickedDay = maxDays - 1; // Korrigiert z.B. 31. Feb auf max. Tag
-        }
-    }
-
-    private void ConfirmDate()
-    {
-        var selectedDate = new DateTime(years[pickedYear], pickedMonth + 1, pickedDay + 1);
-        // Hier weiterverarbeiten...
     }
 }

@@ -9,7 +9,7 @@ h1 {
     background: var(--surface, #18181b);
     border-radius: 20px;
     padding: 24px;
-    width: 360px;
+    width: 50%;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -35,10 +35,8 @@ h2 {
     overflow: hidden;
 }
 
-/* WICHTIG: .drum-col statt .col, damit Bootstrap das Layout nicht zerstört! */
 .drum-col {
-    flex: 1 1 0% !important;
-    width: 33.33% !important;
+    width: 40% !important;
     height: 220px !important;
     overflow-y: scroll !important;
     scroll-snap-type: y mandatory;
@@ -55,6 +53,7 @@ h2 {
     background: #7b94b452;
     z-index: 3;
     flex-shrink: 0;
+    margin: auto;
 }
 
 .drum::after {
@@ -91,7 +90,6 @@ h2 {
     align-items: center;
     justify-content: center;
 
-    /* ALLE Items haben jetzt dauerhaft den "Highlight"-Look */
     font-size: 17px;
     font-weight: 600;
     color: var(--text, #ffffff);
