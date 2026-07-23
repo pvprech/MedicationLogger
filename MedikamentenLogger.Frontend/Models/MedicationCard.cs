@@ -6,4 +6,6 @@ public class MedicationCard
     public required string Name { get; set; }
     public required string Description { get; set; }
     public required string ImagePath { get; set; }
+
+    public List<StarRating> StarRatings { get; set; } = [];
 }

@@ -4,51 +4,25 @@ namespace MedikamentenLogger.Frontend.Clients;
 
 public class StarRatingService
 {
+    // every list in this project got created by an ai because im way to lazy
     private readonly List<StarRating> starRatings =
     [
-        new StarRating
-        {
-            Id = 1,
-            Name = "Fokus & Konzentration",
-            Rating = 4,
-            DisplayOrder = 1
-        },
-        new StarRating
-        {
-            Id = 2,
-            Name = "Stimmung / Antrieb",
-            Rating = 3,
-            DisplayOrder = 2
-        },
+        new StarRating { Id = 1, Name = "Appetitlosigkeit", Rating = 0, DisplayOrder = 1 },
+        new StarRating { Id = 2, Name = "Mundtrockenheit", Rating = 0, DisplayOrder = 2 },
+        new StarRating { Id = 3, Name = "Einschlafprobleme / Schlafstörungen", Rating = 0, DisplayOrder = 3 },
+        new StarRating { Id = 4, Name = "Kopfschmerzen", Rating = 0, DisplayOrder = 4 },
+        new StarRating { Id = 5, Name = "Rebound-Crash (je Höher desto schlimmer)", Rating = 0, DisplayOrder = 5 },
+        new StarRating { Id = 6, Name = "Subjektives Herzklopfen / Ängstlichkeit", Rating = 0, DisplayOrder = 6 },
+        new StarRating { Id = 7, Name = "Gereiztheit / Emotionale Abflachung", Rating = 0, DisplayOrder = 7 },
+        new StarRating { Id = 8, Name = "Magen-Darm-Beschwerden / Übelkeit", Rating = 0, DisplayOrder = 8 },
 
-        new StarRating
-        {
-            Id = 3,
-            Name = "Mundtrockenheit",
-            Rating = 2,
-            DisplayOrder = 3
-        },
-        new StarRating
-        {
-            Id = 4,
-            Name = "Appetitlosigkeit",
-            Rating = 4,
-            DisplayOrder = 4
-        },
-        new StarRating
-        {
-            Id = 5,
-            Name = "Kopfschmerzen",
-            Rating = 1,
-            DisplayOrder = 5
-        },
-        new StarRating
-        {
-            Id = 6,
-            Name = "Schlafstörungen",
-            Rating = 1,
-            DisplayOrder = 6
-        }
+        new StarRating { Id = 9, Name = "Verbesserter Fokus & Konzentration", Rating = 0, DisplayOrder = 9 },
+        new StarRating { Id = 10, Name = "Bessere Impulskontrolle (Innehalten)", Rating = 0, DisplayOrder = 10 },
+        new StarRating { Id = 11, Name = "Steigerung von Stimmung & Antrieb", Rating = 0, DisplayOrder = 11 },
+        new StarRating { Id = 12, Name = "Reduktion der inneren Unruhe / Getriebenheit", Rating = 0, DisplayOrder = 12 },
+        new StarRating { Id = 13, Name = "Bessere Emotionale Regulation", Rating = 0, DisplayOrder = 13 },
+        new StarRating { Id = 14, Name = "Leichtere Handlungsplanung (Exekutive Funktion)", Rating = 0, DisplayOrder = 14 },
+        new StarRating { Id = 15, Name = "Weniger gedankliches Abschweifen (Mind-Wandering)", Rating = 0, DisplayOrder = 15 }
     ];
 
     public StarRating[] GetStarRatings()
