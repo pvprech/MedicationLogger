@@ -3,6 +3,7 @@ namespace MedikamentenLogger.Frontend.Models;
 public class MedicationEntry
 {
     public int Id { get; set; }
+    public int MedicationId { get; set; }
     public DateOnly Date { get; set; }
     public byte GeneralEffectiveness { get; set; }
     public byte GeneralSideEffects { get; set; }

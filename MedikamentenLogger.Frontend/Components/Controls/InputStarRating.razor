@@ -1,0 +1,68 @@
+@using System.Diagnostics.CodeAnalysis
+@inherits InputBase<byte>
+
+<div class="inputStarRating @CssClass">
+    @for (byte i = 2; i <= MaxStars * 2; i += 2)
+    {
+        byte starIndex = i;
+        <span class="star @(starIndex <= Value || IsStarHalfed(starIndex) ? "active" : "")"
+              @onclick="() => SelectStar(starIndex)">
+            @if (IsStarHalfed(starIndex))
+            {
+                <i class="bi bi-star-half" />
+            }
+            else if (starIndex > Value)
+            {
+                <i class="bi bi-star" />
+            }
+            else
+            {
+                <i class="bi bi-star-fill" />
+            }
+
+        </span>
+    }
+</div>
+
+@code {
+    [Parameter] public byte MaxStars { get; set; } = 5;
+
+    private bool IsStarHalfed(byte index)
+    {
+        if ((Value % 2) == 0) return false;
+        else if ((Value + 1) == index) return true;
+        else return false;
+    }
+
+    private void SelectStar(byte index)
+    {
+        if (Value != index && ((Value + 1) != index)) CurrentValueAsString = index.ToString();
+        else if (IsStarHalfed(index)) CurrentValueAsString = (index - 2).ToString();
+        else CurrentValueAsString = (index - 1).ToString();
+    }
+
+    protected override bool TryParseValueFromString(
+        string? value,
+        out byte result,
+        [NotNullWhen(false)] out string? validationErrorMessage)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            result = 0;
+            validationErrorMessage = null;
+            return true;
+        }
+
+        if (byte.TryParse(value, out result))
+        {
+            validationErrorMessage = null;
+            return true;
+        }
+        else
+        {
+            result = default;
+            validationErrorMessage = "Invalid value...";
+            return false;
+        }
+    }
+}

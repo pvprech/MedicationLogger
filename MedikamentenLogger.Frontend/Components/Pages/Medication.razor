@@ -63,7 +63,7 @@ else
     protected override void OnInitialized()
     {
         card = CardService.GetMedicationCardByID(Id);
-        entries = MedicationEntryService.GetMedicationEntries();
+        entries = MedicationEntryService.GetMedicationEntriesByMedicationId(Id);
     }
 
     private void ToSelectedEntry(int id)

@@ -1,0 +1,22 @@
+.star {
+    font-size: 2.2rem;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    margin-left: 0.5rem;
+}
+
+.star.active {
+    color: #ffc107;
+}
+
+.inputStarRating {
+    display: flex;
+    align-items: center;
+}
+
+.inputStarRating.valid,
+.inputStarRating.valid:focus {
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+}

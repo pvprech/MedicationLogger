@@ -15,6 +15,7 @@ public class MedicationEntryService
             new MedicationEntry
             {
                 Id = 1,
+                MedicationId = 1,
                 Date = new DateOnly(2026, 7, 20),
                 GeneralEffectiveness = 4,
                 GeneralSideEffects = 2,
@@ -29,6 +30,7 @@ public class MedicationEntryService
             new MedicationEntry
             {
                 Id = 2,
+                MedicationId = 1,
                 Date = new DateOnly(2026, 7, 19),
                 GeneralEffectiveness = 2,
                 GeneralSideEffects = 4,
@@ -44,6 +46,7 @@ public class MedicationEntryService
             new MedicationEntry
             {
                 Id = 3,
+                MedicationId = 1,
                 Date = new DateOnly(2026, 7, 17),
                 GeneralEffectiveness = 3,
                 GeneralSideEffects = 3,
@@ -59,6 +62,7 @@ public class MedicationEntryService
             new MedicationEntry
             {
                 Id = 4,
+                MedicationId = 1,
                 Date = new DateOnly(2026, 7, 16),
                 GeneralEffectiveness = 5,
                 GeneralSideEffects = 1,
@@ -74,6 +78,7 @@ public class MedicationEntryService
             new MedicationEntry
             {
                 Id = 5,
+                MedicationId = 1,
                 Date = new DateOnly(2026, 7, 15),
                 GeneralEffectiveness = 1,
                 GeneralSideEffects = 5,
@@ -89,6 +94,7 @@ public class MedicationEntryService
             new MedicationEntry
             {
                 Id = 6,
+                MedicationId = 1,
                 Date = new DateOnly(2026, 7, 14),
                 GeneralEffectiveness = 4,
                 GeneralSideEffects = 2,
@@ -104,6 +110,7 @@ public class MedicationEntryService
             new MedicationEntry
             {
                 Id = 7,
+                MedicationId = 1,
                 Date = new DateOnly(2026, 7, 13),
                 GeneralEffectiveness = 2,
                 GeneralSideEffects = 2,
@@ -119,9 +126,9 @@ public class MedicationEntryService
         ];
     }
 
-    public MedicationEntry[] GetMedicationEntries()
+    public MedicationEntry[] GetMedicationEntriesByMedicationId(int id)
     {
-        return [.. entries];
+        return [.. entries.Where(x => x.MedicationId == id)];
     }
 
     public MedicationEntry? GetMedicationEntryByID(int id)

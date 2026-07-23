@@ -1,8 +1,13 @@
+@using MedikamentenLogger.Frontend.Components.Controls
 @using MedikamentenLogger.Frontend.Models
 @using MedikamentenLogger.Frontend.Clients
 
 @inject MedicationEntryService MedicationEntryService
+
+@inject MedicationCardService CardService
 @inject NavigationManager NavigationManager
+
+@rendermode InteractiveServer
 
 @page "/medication/entry/{Id:int}"
 
@@ -12,20 +17,49 @@
 }
 else
 {
-    <h1>@entry.Id</h1>
-    <h1>@entry.Date.ToString("dd.MM.yyyy")</h1>
-    <h1>@entry.GeneralEffectiveness</h1>
-    <h1>@entry.GeneralSideEffects</h1>
-    <h1>@entry.UserNote</h1>
+    <div class="text-center mt-5">
+        <h5>@medicationName</h5>
+    </div>
+
+    <EditForm Model="@entry" FormName="medicationEntry">
+        <div>
+            <label for="userNote" class="form-lable">Notes:</label>
+            <InputTextArea id="userNote" @bind-Value="entry.UserNote" class="form-control" />
+        </div>
+
+        <div>
+            <label for="generalEffectiveness" class="form-lable">General Effectiveness:</label>
+            <InputStarRating id="generalEffectiveness" @bind-Value="entry.GeneralEffectiveness" />
+        </div>
+    </EditForm>
+
+    <div class="backBtn" @onclick="() => ToLastPage()">
+        <h3>&lt;</h3>
+    </div>
 }
 
 @code {
     [Parameter] public int Id { get; set; }
 
     private MedicationEntry? entry;
+    private string medicationName = string.Empty;
 
     protected override void OnInitialized()
     {
         entry = MedicationEntryService.GetMedicationEntryByID(Id);
+
+        if (entry is null)
+        {
+            medicationName = "Unbekannt";
+            return;
+        }
+
+        medicationName = CardService.GetMedicationCardByID(entry.MedicationId)?.Name ?? "Unbekannt";
     }
+
+    private void ToLastPage()
+    {
+        NavigationManager.NavigateTo(entry != null ? $"/medication/{entry.MedicationId}" : "/");
+    }
+
 }
