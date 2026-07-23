@@ -44,7 +44,7 @@ else
         </div>
     </div>
 
-    <div class="createBtn">
+    <div class="createBtn" @onclick="() => NewEntry()">
         <h3>+</h3>
     </div>
 
@@ -69,6 +69,18 @@ else
     private void ToSelectedEntry(int id)
     {
         NavigationManager.NavigateTo($"/medication/entry/{id}");
+    }
+
+    private void NewEntry()
+    {
+        MedicationEntry newEntry = new MedicationEntry
+        {
+            MedicationId = Id,
+            Date = DateOnly.FromDateTime(DateTime.Now),
+            UserNote = string.Empty
+        };
+
+        ToSelectedEntry(MedicationEntryService.AddMedicationEntry(newEntry));
     }
 
     private void ToHomePage()

@@ -128,7 +128,7 @@ public class MedicationEntryService
 
     public MedicationEntry[] GetMedicationEntriesByMedicationId(int id)
     {
-        return [.. entries.Where(x => x.MedicationId == id)];
+        return [.. entries.Where(x => x.MedicationId == id).OrderByDescending(x => x.Date)];
     }
 
     public MedicationEntry? GetMedicationEntryByID(int id)
@@ -136,10 +136,17 @@ public class MedicationEntryService
         return entries.FirstOrDefault(x => x.Id == id);
     }
 
-    public void AddMedicationEntry(MedicationEntry entry)
+    public int AddMedicationEntry(MedicationEntry entry)
     {
+        var existingEntry = entries.FirstOrDefault(x => x.Date == entry.Date);
+        if (existingEntry != null)
+        {
+            return existingEntry.Id;
+        }
+
         entry.Id = entries.Count > 0 ? entries.Max(x => x.Id) + 1 : 1;
         entries.Add(entry);
+        return entry.Id;
     }
 
     public void DeleteMedicationEntryById(int id)
