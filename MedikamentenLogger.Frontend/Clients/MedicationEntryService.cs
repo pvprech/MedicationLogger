@@ -146,4 +146,10 @@ public class MedicationEntryService
     {
         entries.RemoveAll(x => x.Id == id);
     }
+
+    public void UpdateMedicationEntry(MedicationEntry entry)
+    {
+        int index = entries.FindIndex(x => x.Id == entry.Id);
+        entries[index] = entry;
+    }
 }

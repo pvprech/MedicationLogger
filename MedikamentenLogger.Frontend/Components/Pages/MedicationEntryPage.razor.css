@@ -6,3 +6,39 @@ h3 {
     font-size: 3rem;
     margin: auto;
 }
+
+label {
+    color: var(--text);
+    margin-left: 0.3rem;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    font-size: medium;
+}
+
+::deep .inputtextarea {
+    resize: none;
+    overflow: hidden;
+    box-sizing: border-box;
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+::deep .inputtextarea,
+::deep textarea.inputtextarea.valid,
+::deep textarea.inputtextarea:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+    background-color: var(--surface);
+    color: var(--text);
+}
+
+.saveBtn {
+    background-color: var(--success);
+    border: none;
+    height: 2.5rem;
+    width: 5rem;
+    border-radius: 999px;
+    color: var(--text);
+    align-self: center;
+}

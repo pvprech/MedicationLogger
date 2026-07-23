@@ -3,9 +3,9 @@
 @using MedikamentenLogger.Frontend.Clients
 
 @inject MedicationEntryService MedicationEntryService
-
 @inject MedicationCardService CardService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 
 @rendermode InteractiveServer
 
@@ -21,16 +21,33 @@ else
         <h5>@medicationName</h5>
     </div>
 
-    <EditForm Model="@entry" FormName="medicationEntry">
-        <div>
-            <label for="userNote" class="form-lable">Notes:</label>
-            <InputTextArea id="userNote" @bind-Value="entry.UserNote" class="form-control" />
-        </div>
-
-        <div>
-            <label for="generalEffectiveness" class="form-lable">General Effectiveness:</label>
+    <EditForm Model="@entry" FormName="medicationEntry" OnValidSubmit="HandleSubmit" class="p-4 pt-0 mt-4 center">
+        <div class="starField">
+            <label for="generalEffectiveness">General Effectiveness:</label>
             <InputStarRating id="generalEffectiveness" @bind-Value="entry.GeneralEffectiveness" />
         </div>
+
+        <div class="starField">
+            <label for="generalSideEffects">General Side Effects:</label>
+            <InputStarRating id="generalSideEffects" @bind-Value="entry.GeneralSideEffects" />
+        </div>
+
+        @foreach (var starRating in entry.SpecificRatings)
+        {
+            <div class="starField">
+                <label for="@starRating.Name">@starRating.Name:</label>
+                <InputStarRating id="@starRating.Name" @bind-Value="starRating.Rating" />
+            </div>
+        }
+
+        <div>
+            <label for="userNote">Notes:</label>
+            <InputTextArea @ref="textAreaRef" id="userNote" @bind-Value="entry.UserNote"
+                           class="auto-grow form-control inputtextarea" />
+        </div>
+
+        <button type="submit" class="saveBtn mt-5">Save</button>
+
     </EditForm>
 
     <div class="backBtn" @onclick="() => ToLastPage()">
@@ -40,21 +57,40 @@ else
 
 @code {
     [Parameter] public int Id { get; set; }
+    private InputTextArea? textAreaRef;
 
     private MedicationEntry? entry;
     private string medicationName = string.Empty;
 
     protected override void OnInitialized()
     {
-        entry = MedicationEntryService.GetMedicationEntryByID(Id);
+        var originalEntry = MedicationEntryService.GetMedicationEntryByID(Id);
 
-        if (entry is null)
+        if (originalEntry is null)
         {
             medicationName = "Unbekannt";
             return;
         }
 
+        entry = new MedicationEntry
+        {
+            Id = originalEntry.Id,
+            MedicationId = originalEntry.MedicationId,
+            Date = originalEntry.Date,
+            GeneralEffectiveness = originalEntry.GeneralEffectiveness,
+            GeneralSideEffects = originalEntry.GeneralSideEffects,
+            SpecificRatings = originalEntry.SpecificRatings,
+            UserNote = originalEntry.UserNote,
+            ImagePaths = originalEntry.ImagePaths
+        };
+
         medicationName = CardService.GetMedicationCardByID(entry.MedicationId)?.Name ?? "Unbekannt";
+    }
+
+    private void HandleSubmit()
+    {
+        MedicationEntryService.UpdateMedicationEntry(entry!);
+        ToLastPage();
     }
 
     private void ToLastPage()
@@ -62,4 +98,12 @@ else
         NavigationManager.NavigateTo(entry != null ? $"/medication/{entry.MedicationId}" : "/");
     }
 
+    // idk bro just copied it
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && textAreaRef?.Element != null)
+        {
+            await JS.InvokeVoidAsync("initAutoGrow", textAreaRef.Element);
+        }
+    }
 }
