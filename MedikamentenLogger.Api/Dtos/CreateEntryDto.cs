@@ -2,8 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MedikamentenLogger.Api.Dtos;
 
-public record EntryDto(
-    int Id,
+public record CreateEntryDto(
     int MedicationId,
     DateOnly Date,
     byte GenrealEffectiveness,

@@ -1,1 +1,30 @@
-GET http://localhost:8000
+GET http://localhost:8000/entries
+
+###
+GET http://localhost:8000/entries/3
+
+###
+POST http://localhost:8000/entries
+Content-Type: application/json
+
+{
+    "medicationId": 1,
+    "date": "2026-12-12",
+    "generalEffectiveness": 5,
+    "genrealSideEffects": 8,
+    "userNote": "Hallo TEST"
+}
+
+###
+PUT http://localhost:8000/entries/3
+Content-Type: application/json
+
+{
+    "date": "2026-07-26",
+    "generalEffectiveness": 10,
+    "generalSideEffects": 0,
+    "userNote": "Starke Wirkung gegen Mittag"
+}
+
+###
+DELETE http://localhost:8000/entries/3
