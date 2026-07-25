@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="MedikamentenLogger.Api/MedikamentenLogger.Api.csproj" />
+  <Project Path="MedikamentenLogger.Frontend/MedikamentenLogger.Frontend.csproj" />
+</Solution>
