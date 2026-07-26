@@ -1,7 +1,10 @@
-GET http://localhost:8000/entries
+GET http://localhost:8000/entries/pageEntries/1
 
 ###
-GET http://localhost:8000/entries/3
+GET http://localhost:8000/entries/openedEntry/1
+
+###
+GET http://localhost:8000/entries/entryDetails/1
 
 ###
 POST http://localhost:8000/entries
@@ -16,15 +19,24 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:8000/entries/3
+PUT http://localhost:8000/entries/1
 Content-Type: application/json
 
 {
-    "date": "2026-07-26",
     "generalEffectiveness": 10,
     "generalSideEffects": 0,
-    "userNote": "Starke Wirkung gegen Mittag"
+    "userNote": "Put TEST",
+    "Ratings": [
+        {
+            "starRatingId": 1,
+            "Rating": 0
+        },
+        {
+            "starRatingId": 2,
+            "rating": 0
+        }
+    ]
 }
 
 ###
-DELETE http://localhost:8000/entries/3
+DELETE http://localhost:8000/entries/1

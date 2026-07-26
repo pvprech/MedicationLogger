@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 namespace MedikamentenLogger.Api.Dtos;
 
 public record UpdateEntryDto(
-    DateOnly Date,
-    byte GeneralEffectiveness,
-    byte GeneralSideEffects,
-    [Required] string UserNote
+    [Required][Range(0, 10)] byte GeneralEffectiveness,
+    [Required][Range(0, 10)] byte GeneralSideEffects,
+    [Required] string UserNote,
+    [Required] List<UpdateEntryRatingDto> Ratings
 );

@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 namespace MedikamentenLogger.Api.Dtos;
 
 public record CreateEntryDto(
-    int MedicationId,
-    DateOnly Date,
-    byte GenrealEffectiveness,
-    byte GeneralSideEffects,
+    [Required] int MedicationId,
+    [Required] DateOnly Date,
+    [Required][Range(0, 10)] byte GenrealEffectiveness,
+    [Required][Range(0, 10)] byte GeneralSideEffects,
     [Required] string UserNote
 );
