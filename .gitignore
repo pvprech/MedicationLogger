@@ -2,13 +2,22 @@
 **/bin/
 **/obj/
 
-# IDE
+# Database (SQLite)
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# IDE & Editor files
 .vs/
 .vscode/
-
-# Rider
 .idea/
+*.user
+*.userosscache
+*.sln.docstates
 
-# OS
+# OS generated files
 .DS_Store
 Thumbs.db
