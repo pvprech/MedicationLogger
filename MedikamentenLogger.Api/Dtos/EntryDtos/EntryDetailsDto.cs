@@ -1,6 +1,6 @@
-using MedikamentenLogger.Api.Models;
+using MedikamentenLogger.Api.Dtos.RatingDtos;
 
-namespace MedikamentenLogger.Api.Dtos;
+namespace MedikamentenLogger.Api.Dtos.EntryDtos;
 
 public record EntryDetailsDto(
     int Id,

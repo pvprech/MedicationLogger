@@ -1,4 +1,4 @@
-namespace MedikamentenLogger.Api.Dtos;
+namespace MedikamentenLogger.Api.Dtos.RatingDtos;
 
 public record StarRatingDetailsDto(
     int Id,

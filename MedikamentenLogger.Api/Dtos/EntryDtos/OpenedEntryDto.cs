@@ -1,4 +1,6 @@
-namespace MedikamentenLogger.Api.Dtos;
+using MedikamentenLogger.Api.Dtos.RatingDtos;
+
+namespace MedikamentenLogger.Api.Dtos.EntryDtos;
 
 public record OpenedEntryDto(
     byte GeneralEffectiveness,

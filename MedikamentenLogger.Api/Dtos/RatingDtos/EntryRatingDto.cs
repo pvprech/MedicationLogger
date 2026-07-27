@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MedikamentenLogger.Api.Dtos;
+namespace MedikamentenLogger.Api.Dtos.RatingDtos;
 
 public record EntryRatingDto(
     [Required] string Name,

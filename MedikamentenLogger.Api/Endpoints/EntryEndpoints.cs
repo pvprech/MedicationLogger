@@ -1,5 +1,5 @@
-using System.Reflection.Metadata.Ecma335;
-using MedikamentenLogger.Api.Dtos;
+using MedikamentenLogger.Api.Dtos.EntryDtos;
+using MedikamentenLogger.Api.Dtos.RatingDtos;
 using MedikamentenLogger.Api.Models;
 
 namespace MedikamentenLogger.Api.Endpoints;

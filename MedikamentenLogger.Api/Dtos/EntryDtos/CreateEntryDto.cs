@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MedikamentenLogger.Api.Dtos;
+namespace MedikamentenLogger.Api.Dtos.EntryDtos;
 
 public record CreateEntryDto(
     [Required] int MedicationId,
@@ -9,3 +9,4 @@ public record CreateEntryDto(
     [Required][Range(0, 10)] byte GeneralSideEffects,
     [Required] string UserNote
 );
+
