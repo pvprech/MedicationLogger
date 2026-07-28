@@ -4,7 +4,7 @@ GET http://localhost:8000/entries/pageEntries/1
 GET http://localhost:8000/entries/openedEntry/1
 
 ###
-GET http://localhost:8000/entries/entryDetails/1
+GET http://localhost:8000/entries/entryDetails/9
 
 ###
 POST http://localhost:8000/entries
@@ -19,7 +19,7 @@ Content-Type: application/json
 }
 
 ###
-PUT http://localhost:8000/entries/1
+PUT http://localhost:8000/entries/9
 Content-Type: application/json
 
 {
@@ -39,4 +39,4 @@ Content-Type: application/json
 }
 
 ###
-DELETE http://localhost:8000/entries/1
+DELETE http://localhost:8000/entries/9

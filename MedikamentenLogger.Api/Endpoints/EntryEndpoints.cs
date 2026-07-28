@@ -1,88 +1,18 @@
+using MedikamentenLogger.Api.Data;
 using MedikamentenLogger.Api.Dtos.EntryDtos;
 using MedikamentenLogger.Api.Dtos.RatingDtos;
 using MedikamentenLogger.Api.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MedikamentenLogger.Api.Endpoints;
 
 public static class EntryEndpoints
 {
-    static readonly List<StarRating> starRatings =
-        [
-            new() {
-                Id = 1,
-                MedicationId = 1,
-                Name = "Verträglichkeit",
-                DisplayOrder = 1
-            },
-            new() {
-                Id = 2,
-                MedicationId = 1,
-                Name = "Wirksamkeit",
-                DisplayOrder = 2
-            },
-            new() {
-                Id = 3,
-                MedicationId = 2,
-                Name = "Einnahmeaufwand",
-                DisplayOrder = 3
-            }
-        ];
-
-    static readonly List<EntryRating> entryRatings =
-    [
-        new() {
-                StarRatingId = 1,
-                EntryId = 1,
-                DisplayOrder = 1,
-                Rating = 5
-            },
-            new() {
-                StarRatingId = 2,
-                EntryId = 1,
-                DisplayOrder = 2,
-                Rating = 4
-            },
-            new() {
-                StarRatingId = 3,
-                EntryId = 2,
-                DisplayOrder = 3,
-                Rating = 2
-            }
-    ];
-
-    static readonly List<Entry> entries =
-    [
-        new() {
-                Id = 1,
-                MedicationId = 1,
-                Date = DateOnly.FromDateTime(DateTime.Today),
-                GeneralEffectiveness = 4,
-                GeneralSideEffects = 1,
-                UserNote = "Gute Wirkung im Laufe des Vormittags. Leichte Müdigkeit nach der Einnahme."
-            },
-            new() {
-                Id = 2,
-                MedicationId = 1,
-                Date = DateOnly.FromDateTime(DateTime.Today.AddDays(-1)),
-                GeneralEffectiveness = 5,
-                GeneralSideEffects = 0,
-                UserNote = "Keine Nebenwirkungen gespürt, Symptome komplett verschwunden."
-            },
-            new() {
-                Id = 3,
-                MedicationId = 2,
-                Date = DateOnly.FromDateTime(DateTime.Today.AddDays(-2)),
-                GeneralEffectiveness = 2,
-                GeneralSideEffects = 3,
-                UserNote = "Später eingenommen als sonst. Magenstechen am Nachmittag."
-            }
-    ];
-
-    private static EntryDetailsDto? GetEntryDetailsById(int entryId)
+    private static async Task<EntryDetailsDto?> GetEntryDetailsByIdAsync(int entryId, MLContext dbContext)
     {
-        List<StarRatingDetailsDto> ratings = [.. entryRatings.Where(rating => rating.EntryId == entryId)
+        List<StarRatingDetailsDto> ratings = await dbContext.EntryRatings.Where(rating => rating.EntryId == entryId)
                 .Join(
-                    starRatings,
+                    dbContext.StarRatings,
                     rating => rating.StarRatingId,
                     starRating => starRating.Id,
                     (rating, starRating) => new StarRatingDetailsDto(
@@ -91,9 +21,9 @@ public static class EntryEndpoints
                         rating.Rating,
                         rating.DisplayOrder
                     )
-                )];
+                ).ToListAsync();
 
-        EntryDetailsDto? entryDetails = entries
+        EntryDetailsDto? entryDetails = await dbContext.Entries
             .Where(entry => entry.Id == entryId)
                 .Select(entry => new EntryDetailsDto(
                     entry.Id,
@@ -104,7 +34,7 @@ public static class EntryEndpoints
                     entry.UserNote,
                     ratings
                 ))
-                .FirstOrDefault();
+                .FirstOrDefaultAsync();
 
         return entryDetails;
     }
@@ -119,15 +49,16 @@ public static class EntryEndpoints
 
 
         // GET for PageEntryDto /entries/pageEntries{medicationId}
-        group.MapGet("/pageEntries/{medicationId}", (int medicationId) =>
+        group.MapGet("/pageEntries/{medicationId}", async (int medicationId, MLContext dbContext) =>
         {
-            List<PageEntryDto> pageEntryDtos = [.. entries.Where(entry => entry.MedicationId == medicationId)
+            List<PageEntryDto> pageEntryDtos = await dbContext.Entries.Where(entry => entry.MedicationId == medicationId)
                 .Select(entry => new PageEntryDto
                 (
                     entry.Id,
                     entry.MedicationId,
                     entry.Date
-                ))];
+                ))
+                .ToListAsync();
 
             return Results.Ok(pageEntryDtos);
         });
@@ -135,17 +66,19 @@ public static class EntryEndpoints
 
 
         // GET for OpenedEntryDto /entries/openedEntry/{entryId}
-        group.MapGet("/openedEntry/{entryId}", (int entryId) =>
+        group.MapGet("/openedEntry/{entryId}", async (int entryId, MLContext dbContext) =>
         {
-            List<EntryRatingDto> ratingDtos = [.. entryRatings
+            List<EntryRatingDto> ratingDtos = await dbContext.EntryRatings
                 .Where(rating => rating.EntryId == entryId)
                     .Select(rating => new EntryRatingDto(
-                        starRatings.FirstOrDefault(starRating => starRating.Id == rating.StarRatingId)!.Name,
+                        dbContext.StarRatings
+                            .FirstOrDefault(starRating => starRating.Id == rating.StarRatingId)!.Name,
                         rating.Rating,
                         rating.DisplayOrder
-                    ))];
+                    ))
+                    .ToListAsync();
 
-            OpenedEntryDto? openedEntryDto = entries
+            OpenedEntryDto? openedEntryDto = await dbContext.Entries
                 .Where(entry => entry.Id == entryId)
                     .Select(entry => new OpenedEntryDto(
                         entry.GeneralEffectiveness,
@@ -153,7 +86,7 @@ public static class EntryEndpoints
                         entry.UserNote,
                         ratingDtos
                     ))
-                    .FirstOrDefault();
+                    .FirstOrDefaultAsync();
 
             return openedEntryDto is not null ? Results.Ok(openedEntryDto) : Results.NotFound();
         });
@@ -161,63 +94,62 @@ public static class EntryEndpoints
 
 
         // GET for EntryDetailsDto /entries/entryDetails/{entryId}
-        group.MapGet("/entryDetails/{entryId}", (int entryId) =>
+        group.MapGet("/entryDetails/{entryId}", async (int entryId, MLContext dbContext) =>
         {
-            var entryDetails = GetEntryDetailsById(entryId);
+            var entryDetails = await GetEntryDetailsByIdAsync(entryId, dbContext);
             return entryDetails is not null ? Results.Ok(entryDetails) : Results.NotFound();
         }).WithName(GetEntryEndpointName);
 
 
 
         // POST /entries
-        group.MapPost("/", (CreateEntryDto newEntry) =>
+        group.MapPost("/", async (CreateEntryDto newEntry, MLContext dbContext) =>
         {
             Entry entry = new()
             {
-                Id = entries.Count + 1,
                 MedicationId = newEntry.MedicationId,
                 Date = newEntry.Date,
                 GeneralEffectiveness = newEntry.GenrealEffectiveness,
                 GeneralSideEffects = newEntry.GeneralSideEffects,
                 UserNote = newEntry.UserNote
             };
-            entries.Add(entry);
 
-            EntryDetailsDto responseDto = GetEntryDetailsById(entry.Id)!;
+            dbContext.Entries.Add(entry);
+            await dbContext.SaveChangesAsync();
+
+            EntryDetailsDto responseDto = (await GetEntryDetailsByIdAsync(entry.Id, dbContext))!;
             return Results.CreatedAtRoute(GetEntryEndpointName, new { entryId = entry.Id }, responseDto);
         });
 
 
 
         // PUT /entries/{id}
-        group.MapPut("/{entryId}", (int entryId, UpdateEntryDto updatedEntry) =>
+        group.MapPut("/{entryId}", async (int entryId, UpdateEntryDto updatedEntry, MLContext dbContext) =>
         {
-            int index = entries.FindIndex(entry => entry.Id == entryId);
-            if (index == -1) return Results.NotFound();
+            var entry = await dbContext.Entries.FindAsync(entryId);
+            if (entry is null) return Results.NotFound();
 
-            entries[index] = new()
-            {
-                GeneralEffectiveness = updatedEntry.GeneralEffectiveness,
-                GeneralSideEffects = updatedEntry.GeneralSideEffects,
-                UserNote = updatedEntry.UserNote,
+            entry.GeneralEffectiveness = updatedEntry.GeneralEffectiveness;
+            entry.GeneralSideEffects = updatedEntry.GeneralSideEffects;
+            entry.UserNote = updatedEntry.UserNote;
 
-                // old values
-                Id = entries[index].Id,
-                MedicationId = entries[index].MedicationId,
-                Date = entries[index].Date
-            };
 
-            var allowedIds = updatedEntry.Ratings.Select(rating => rating.StarRatingId).ToHashSet();
+            var ratingsUpdateDict = updatedEntry.Ratings
+                .ToDictionary(r => r.StarRatingId, r => r.Rating);
 
-            List<EntryRating> ratings = [.. entryRatings
-                .Where(rating => rating.EntryId == entryId)
-                    .Where(rating => allowedIds
-                        .Contains(rating.StarRatingId))];
+            List<EntryRating> ratings = await dbContext.EntryRatings
+                .Where(rating => rating.EntryId == entryId && ratingsUpdateDict.Keys.Contains(rating.StarRatingId))
+                .ToListAsync();
 
             foreach (var rating in ratings)
             {
-                rating.Rating = updatedEntry.Ratings.First(r => r.StarRatingId == rating.StarRatingId).Rating;
+                if (ratingsUpdateDict.TryGetValue(rating.StarRatingId, out var newRatingValue))
+                {
+                    rating.Rating = newRatingValue;
+                }
             }
+
+            await dbContext.SaveChangesAsync();
 
             return Results.NoContent();
         });
@@ -225,13 +157,11 @@ public static class EntryEndpoints
 
 
         // DELETE /entries/{entryId}
-        group.MapDelete("/{entryId}", (int entryId) =>
+        group.MapDelete("/{entryId}", async (int entryId, MLContext dbContext) =>
         {
-            var entry = entries.FirstOrDefault(e => e.Id == entryId);
-            if (entry is null) return Results.NotFound();
-
-            entryRatings.RemoveAll(rating => rating.EntryId == entryId);
-            entries.Remove(entry);
+            await dbContext.Entries
+                .Where(entry => entry.Id == entryId)
+                    .ExecuteDeleteAsync();
 
             return Results.NoContent();
         });
