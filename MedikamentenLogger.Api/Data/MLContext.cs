@@ -10,6 +10,7 @@ public class MLContext(DbContextOptions<MLContext> options)
     public DbSet<EntryRating> EntryRatings => Set<EntryRating>();
     public DbSet<StarRating> StarRatings => Set<StarRating>();
 
+    // Making EF Core clear how the relations should be
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

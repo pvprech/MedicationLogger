@@ -8,8 +8,12 @@ namespace MedikamentenLogger.Api.Endpoints;
 
 public static class EntryEndpoints
 {
+    // Method is creating the full frontend instance of the entry object
+    // This is only needed by creating an new object because the Frontend is lazy loading
     private static async Task<EntryDetailsDto?> GetEntryDetailsByIdAsync(int entryId, MLContext dbContext)
     {
+        // Extracting the Ratings for the entries via join 
+        // because the database does not contain Lists => I always use relational Databases because its more fun
         List<StarRatingDetailsDto> ratings = await dbContext.EntryRatings.Where(rating => rating.EntryId == entryId)
                 .Join(
                     dbContext.StarRatings,
@@ -23,6 +27,7 @@ public static class EntryEndpoints
                     )
                 ).ToListAsync();
 
+        // "Building" the Frontend instance
         EntryDetailsDto? entryDetails = await dbContext.Entries
             .Where(entry => entry.Id == entryId)
                 .Select(entry => new EntryDetailsDto(
@@ -49,6 +54,7 @@ public static class EntryEndpoints
 
 
         // GET for PageEntryDto /entries/pageEntries{medicationId}
+        // First Dto the Frontend pulls. Used in a calender or similar => always a List
         group.MapGet("/pageEntries/{medicationId}", async (int medicationId, MLContext dbContext) =>
         {
             List<PageEntryDto> pageEntryDtos = await dbContext.Entries.Where(entry => entry.MedicationId == medicationId)
@@ -66,8 +72,10 @@ public static class EntryEndpoints
 
 
         // GET for OpenedEntryDto /entries/openedEntry/{entryId}
+        // Second Dto the Frontend pulls. Used when the entry is opened in a page => always one
         group.MapGet("/openedEntry/{entryId}", async (int entryId, MLContext dbContext) =>
         {
+            // Extracting the costum ratings that are expected from the frontend but stored relational
             List<EntryRatingDto> ratingDtos = await dbContext.EntryRatings
                 .Where(rating => rating.EntryId == entryId)
                     .Select(rating => new EntryRatingDto(
@@ -78,6 +86,8 @@ public static class EntryEndpoints
                     ))
                     .ToListAsync();
 
+            // "Building" the instance 
+            // => Ids and Date is not needed because it already got it from the first Dto
             OpenedEntryDto? openedEntryDto = await dbContext.Entries
                 .Where(entry => entry.Id == entryId)
                     .Select(entry => new OpenedEntryDto(
@@ -94,6 +104,8 @@ public static class EntryEndpoints
 
 
         // GET for EntryDetailsDto /entries/entryDetails/{entryId}
+        // This GET request is ONLY required for the POST request because the Frontend wants to 
+        // instantly open the entry after creation instead of lazy loading it (horrible ux + more requests)
         group.MapGet("/entryDetails/{entryId}", async (int entryId, MLContext dbContext) =>
         {
             var entryDetails = await GetEntryDetailsByIdAsync(entryId, dbContext);
@@ -103,6 +115,7 @@ public static class EntryEndpoints
 
 
         // POST /entries
+        // POST ONLY the ENTRY the ratings are determined from the MedicationId and are coming from the StarRatinEndpoint
         group.MapPost("/", async (CreateEntryDto newEntry, MLContext dbContext) =>
         {
             Entry entry = new()
@@ -117,7 +130,8 @@ public static class EntryEndpoints
             dbContext.Entries.Add(entry);
             await dbContext.SaveChangesAsync();
 
-            EntryDetailsDto responseDto = (await GetEntryDetailsByIdAsync(entry.Id, dbContext))!;
+            // Get the full instance for instant showcase in frontend
+            EntryDetailsDto responseDto = (await GetEntryDetailsByIdAsync(entry.Id, dbContext))!; // CANT be null if it is null the db is corrupted
             return Results.CreatedAtRoute(GetEntryEndpointName, new { entryId = entry.Id }, responseDto);
         });
 
@@ -129,18 +143,21 @@ public static class EntryEndpoints
             var entry = await dbContext.Entries.FindAsync(entryId);
             if (entry is null) return Results.NotFound();
 
+            // User should not be able to update everything i.e. the Date (auto created)
             entry.GeneralEffectiveness = updatedEntry.GeneralEffectiveness;
             entry.GeneralSideEffects = updatedEntry.GeneralSideEffects;
             entry.UserNote = updatedEntry.UserNote;
 
-
+            // Putting the ratings from the dto in an dictionary to "extract" the ids for changing the ones in the db
             var ratingsUpdateDict = updatedEntry.Ratings
                 .ToDictionary(r => r.StarRatingId, r => r.Rating);
 
+            // Pulling from the db using the dictionary and putting it in a List for changing
             List<EntryRating> ratings = await dbContext.EntryRatings
                 .Where(rating => rating.EntryId == entryId && ratingsUpdateDict.Keys.Contains(rating.StarRatingId))
                 .ToListAsync();
 
+            // Changing the Ratings using the dictionary
             foreach (var rating in ratings)
             {
                 if (ratingsUpdateDict.TryGetValue(rating.StarRatingId, out var newRatingValue))
@@ -157,6 +174,7 @@ public static class EntryEndpoints
 
 
         // DELETE /entries/{entryId}
+        // Delete everything dont tell frontend the frontend does not need to know if it existed
         group.MapDelete("/{entryId}", async (int entryId, MLContext dbContext) =>
         {
             await dbContext.Entries

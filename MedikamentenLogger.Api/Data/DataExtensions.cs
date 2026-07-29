@@ -7,6 +7,7 @@ namespace MedikamentenLogger.Api.Data;
 
 public static class DataExtensions
 {
+    // Automatic Migration of the db remove before production
     public static void MigrateDb(this WebApplication app)
     {
         using var scope = app.Services.CreateScope();
@@ -16,9 +17,9 @@ public static class DataExtensions
         dbContext.Database.Migrate();
     }
 
+    // Seeding remove before production
     public static void SeedMlDb(this WebApplicationBuilder builder)
     {
-        // Seeding
         var connString = builder.Configuration.GetConnectionString("MedicationLogger");
         builder.Services.AddSqlite<MLContext>(
             connString,
