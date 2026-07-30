@@ -119,6 +119,7 @@ else
         {
             ratingId = entryDetails.SpecificRatings.First(e => e.Name == rating.Name).Id;
             UpdateEntryRatingDto updatedRating = new(ratingId, rating.Rating);
+            updatedRatings.Add(updatedRating);
         }
 
         UpdateEntryDto updateEntryDto = new(

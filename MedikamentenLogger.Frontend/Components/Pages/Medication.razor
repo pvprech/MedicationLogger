@@ -64,6 +64,7 @@ else
     protected override async Task OnInitializedAsync()
     {
         entries = [.. await MedicationEntryService.GetMedicationEntriesByMedicationId(Id)];
+        entries = [.. entries.OrderByDescending(e => e.Date)];
         CardName = CardService.GetMedicationCardByID(entries[0].MedicationId)!.Name ?? "Unbekannt";
     }
 

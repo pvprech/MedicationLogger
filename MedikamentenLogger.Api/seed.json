@@ -3,104 +3,108 @@
         {
             "Id": 1,
             "MedicationId": 1,
-            "Name": "Verträglichkeit",
+            "Name": "Konzentration",
             "DisplayOrder": 1
         },
         {
             "Id": 2,
             "MedicationId": 1,
-            "Name": "Wirksamkeit",
+            "Name": "Fokus",
             "DisplayOrder": 2
         },
         {
             "Id": 3,
             "MedicationId": 1,
-            "Name": "Geschmacksneutralität",
+            "Name": "Impulskontrolle",
             "DisplayOrder": 3
         },
         {
             "Id": 4,
-            "MedicationId": 2,
-            "Name": "Einnahmeaufwand",
-            "DisplayOrder": 1
+            "MedicationId": 1,
+            "Name": "Motivation",
+            "DisplayOrder": 4
         },
         {
             "Id": 5,
-            "MedicationId": 2,
-            "Name": "Wirkungsdauer",
-            "DisplayOrder": 2
+            "MedicationId": 1,
+            "Name": "Innere Ruhe",
+            "DisplayOrder": 5
         },
         {
             "Id": 6,
-            "MedicationId": 3,
-            "Name": "Magenverträglichkeit",
-            "DisplayOrder": 1
+            "MedicationId": 1,
+            "Name": "Emotionale Stabilität",
+            "DisplayOrder": 6
+        },
+        {
+            "Id": 7,
+            "MedicationId": 1,
+            "Name": "Appetitverlust",
+            "DisplayOrder": 7
+        },
+        {
+            "Id": 8,
+            "MedicationId": 1,
+            "Name": "Schlafprobleme",
+            "DisplayOrder": 8
+        },
+        {
+            "Id": 9,
+            "MedicationId": 1,
+            "Name": "Kopfschmerzen",
+            "DisplayOrder": 9
+        },
+        {
+            "Id": 10,
+            "MedicationId": 1,
+            "Name": "Mundtrockenheit",
+            "DisplayOrder": 10
+        },
+        {
+            "Id": 11,
+            "MedicationId": 1,
+            "Name": "Herzrasen",
+            "DisplayOrder": 11
+        },
+        {
+            "Id": 12,
+            "MedicationId": 1,
+            "Name": "Rebound",
+            "DisplayOrder": 12
         }
     ],
     "Entries": [
         {
             "Id": 1,
             "MedicationId": 1,
-            "Date": "2026-07-27",
+            "Date": "2026-07-30",
             "GeneralEffectiveness": 8,
             "GeneralSideEffects": 2,
-            "UserNote": "Gute Wirkung im Laufe des Vormittags. Leichte Müdigkeit nach der Einnahme."
+            "UserNote": "Gute Konzentration, leichter Appetitverlust gegen Mittag."
         },
         {
             "Id": 2,
-            "MedicationId": 1,
-            "Date": "2026-07-26",
-            "GeneralEffectiveness": 10,
-            "GeneralSideEffects": 0,
-            "UserNote": "Keine Nebenwirkungen gespürt, Symptome komplett verschwunden."
+            "MedicationId": 2,
+            "Date": "2026-07-30",
+            "GeneralEffectiveness": 7,
+            "GeneralSideEffects": 3,
+            "UserNote": "Konstante Wirkung bis in den Nachmittag, etwas Einschlafprobleme."
         },
         {
             "Id": 3,
-            "MedicationId": 1,
-            "Date": "2026-07-25",
-            "GeneralEffectiveness": 0,
-            "GeneralSideEffects": 10,
-            "UserNote": "Starke Nebenwirkungen. Keine spürbare Linderung."
+            "MedicationId": 3,
+            "Date": "2026-07-30",
+            "GeneralEffectiveness": 9,
+            "GeneralSideEffects": 1,
+            "UserNote": "Sehr ausgeglichener Tag mit guter Impulskontrolle."
         },
         {
             "Id": 4,
-            "MedicationId": 1,
-            "Date": "2026-07-24",
-            "GeneralEffectiveness": 6,
-            "GeneralSideEffects": 3,
-            "UserNote": "Keine besonderen Vorkommnisse."
-        },
-        {
-            "Id": 5,
-            "MedicationId": 2,
-            "Date": "2026-07-27",
-            "GeneralEffectiveness": 4,
-            "GeneralSideEffects": 7,
-            "UserNote": "Später eingenommen als sonst. Magenstechen am Nachmittag."
-        },
-        {
-            "Id": 6,
-            "MedicationId": 2,
-            "Date": "2026-07-23",
-            "GeneralEffectiveness": 5,
-            "GeneralSideEffects": 2,
-            "UserNote": "Dieser Text ist bewusst lang gehalten, um zu testen, wie das User Interface oder die Datenbank mit langen Strings umgeht (String-Truncation, Ellipsis-Anzeige in der GUI, Text-Overflow oder Maximallängen-Validierung)."
-        },
-        {
-            "Id": 7,
-            "MedicationId": 3,
-            "Date": "2026-07-22",
-            "GeneralEffectiveness": 10,
-            "GeneralSideEffects": 0,
-            "UserNote": ""
-        },
-        {
-            "Id": 8,
             "MedicationId": 4,
-            "Date": "2026-07-21",
-            "GeneralEffectiveness": 1,
-            "GeneralSideEffects": 8,
-            "UserNote": "Test-Eintrag für ein Medikament ohne benutzerdefinierte StarRatings."
+            "Date": "2026-07-30",
+            "GeneralEffectiveness": 6,
+            "GeneralSideEffects": 4,
+            "UserNote": "Ordentliche Wirkung, trockener Mund und leichte Nervosität."
         }
     ],
     "EntryRatings": [
@@ -108,7 +112,7 @@
             "StarRatingId": 1,
             "EntryId": 1,
             "DisplayOrder": 1,
-            "Rating": 10
+            "Rating": 9
         },
         {
             "StarRatingId": 2,
@@ -120,61 +124,61 @@
             "StarRatingId": 3,
             "EntryId": 1,
             "DisplayOrder": 3,
-            "Rating": 6
-        },
-        {
-            "StarRatingId": 1,
-            "EntryId": 2,
-            "DisplayOrder": 1,
-            "Rating": 10
-        },
-        {
-            "StarRatingId": 2,
-            "EntryId": 2,
-            "DisplayOrder": 2,
-            "Rating": 10
-        },
-        {
-            "StarRatingId": 3,
-            "EntryId": 2,
-            "DisplayOrder": 3,
-            "Rating": 9
-        },
-        {
-            "StarRatingId": 1,
-            "EntryId": 3,
-            "DisplayOrder": 1,
-            "Rating": 1
-        },
-        {
-            "StarRatingId": 4,
-            "EntryId": 5,
-            "DisplayOrder": 1,
             "Rating": 4
         },
         {
-            "StarRatingId": 5,
-            "EntryId": 5,
-            "DisplayOrder": 2,
-            "Rating": 3
-        },
-        {
             "StarRatingId": 4,
-            "EntryId": 6,
+            "EntryId": 2,
             "DisplayOrder": 1,
-            "Rating": 0
+            "Rating": 8
         },
         {
             "StarRatingId": 5,
-            "EntryId": 6,
+            "EntryId": 2,
             "DisplayOrder": 2,
-            "Rating": 2
+            "Rating": 7
         },
         {
             "StarRatingId": 6,
-            "EntryId": 7,
+            "EntryId": 2,
+            "DisplayOrder": 3,
+            "Rating": 5
+        },
+        {
+            "StarRatingId": 7,
+            "EntryId": 3,
             "DisplayOrder": 1,
-            "Rating": 10
+            "Rating": 9
+        },
+        {
+            "StarRatingId": 8,
+            "EntryId": 3,
+            "DisplayOrder": 2,
+            "Rating": 9
+        },
+        {
+            "StarRatingId": 9,
+            "EntryId": 3,
+            "DisplayOrder": 3,
+            "Rating": 7
+        },
+        {
+            "StarRatingId": 10,
+            "EntryId": 4,
+            "DisplayOrder": 1,
+            "Rating": 6
+        },
+        {
+            "StarRatingId": 11,
+            "EntryId": 4,
+            "DisplayOrder": 2,
+            "Rating": 5
+        },
+        {
+            "StarRatingId": 12,
+            "EntryId": 4,
+            "DisplayOrder": 3,
+            "Rating": 6
         }
     ]
 }
