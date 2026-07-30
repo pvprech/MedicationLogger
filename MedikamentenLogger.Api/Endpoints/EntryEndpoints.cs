@@ -1,6 +1,6 @@
 using MedikamentenLogger.Api.Data;
-using MedikamentenLogger.Api.Dtos.EntryDtos;
-using MedikamentenLogger.Api.Dtos.RatingDtos;
+using MedikamentenLogger.Shared.Dtos.EntryDtos;
+using MedikamentenLogger.Shared.Dtos.RatingDtos;
 using MedikamentenLogger.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -127,7 +127,26 @@ public static class EntryEndpoints
                 UserNote = newEntry.UserNote
             };
 
+            List<StarRating> ratings = await dbContext.StarRatings
+                .Where(rating => rating.MedicationId == entry.MedicationId)
+                    .ToListAsync();
+
             dbContext.Entries.Add(entry);
+            await dbContext.SaveChangesAsync();
+
+            foreach (var rating in ratings)
+            {
+                EntryRating entryRating = new()
+                {
+                    StarRatingId = rating.Id,
+                    EntryId = entry.Id,
+                    DisplayOrder = rating.DisplayOrder,
+                    Rating = 0
+                };
+                dbContext.EntryRatings.Add(entryRating);
+            }
+
+
             await dbContext.SaveChangesAsync();
 
             // Get the full instance for instant showcase in frontend

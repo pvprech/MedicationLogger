@@ -1,7 +1,7 @@
 using System.Text.Json;
-using MedikamentenLogger.Api.Dtos.SpecialDtos;
 using MedikamentenLogger.Api.Models;
 using Microsoft.EntityFrameworkCore;
+using MedikamentenLogger.Api.Dtos.SpecialDtos;
 
 namespace MedikamentenLogger.Api.Data;
 

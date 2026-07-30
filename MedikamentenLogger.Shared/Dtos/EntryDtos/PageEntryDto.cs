@@ -1,4 +1,4 @@
-namespace MedikamentenLogger.Api.Dtos.EntryDtos;
+namespace MedikamentenLogger.Shared.Dtos.EntryDtos;
 
 public record PageEntryDto(
     int Id,

@@ -3,21 +3,23 @@
 
 @using Clients
 @using Models
+@using MedikamentenLogger.Shared.Dtos.EntryDtos
 
 @inject NavigationManager NavigationManager
 @inject MedicationEntryService MedicationEntryService
+@inject NavigationState NVState
 
 @inject MedicationCardService CardService
 @inject NavigationManager NavigationManager
 
-@if (card == null)
+@if (CardName is null || entries is null)
 {
     <p>Loading Medication...</p>
 }
 else
 {
     <div class="text-center mt-5">
-        <h1>@card.Name</h1>
+        <h1>@CardName</h1>
     </div>
 
     <div class="card">
@@ -56,31 +58,32 @@ else
 @code {
     [Parameter] public int Id { get; set; }
 
-    private MedicationEntry[] entries = Array.Empty<MedicationEntry>();
+    private List<PageEntryDto> entries = [];
+    private string? CardName;
 
-    private MedicationCard? card;
-
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        card = CardService.GetMedicationCardByID(Id);
-        entries = MedicationEntryService.GetMedicationEntriesByMedicationId(Id);
+        entries = [.. await MedicationEntryService.GetMedicationEntriesByMedicationId(Id)];
+        CardName = CardService.GetMedicationCardByID(entries[0].MedicationId)!.Name ?? "Unbekannt";
     }
 
     private void ToSelectedEntry(int id)
     {
+        NVState.SelectedEntry = entries!.First(entry => entry.Id == id);
         NavigationManager.NavigateTo($"/medication/entry/{id}");
     }
 
-    private void NewEntry()
+    private async Task NewEntry()
     {
-        MedicationEntry newEntry = new MedicationEntry
-        {
-            MedicationId = Id,
-            Date = DateOnly.FromDateTime(DateTime.Now),
-            UserNote = string.Empty
-        };
+        CreateEntryDto newEntry = new CreateEntryDto
+        (
+            Id, DateOnly.FromDateTime(DateTime.Today),
+            0, 0, "Notizen"
+        );
 
-        ToSelectedEntry(MedicationEntryService.AddMedicationEntry(newEntry));
+        EntryDetailsDto entry = (await MedicationEntryService.AddMedicationEntry(newEntry))!;
+        entries.Add(new PageEntryDto(entry.Id, entry.MedicationId, entry.Date));
+        ToSelectedEntry(entry.Id);
     }
 
     private void ToHomePage()

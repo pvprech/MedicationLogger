@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MedikamentenLogger.Api.Dtos.RatingDtos;
+namespace MedikamentenLogger.Shared.Dtos.RatingDtos;
 
 public record UpdateEntryRatingDto(
     [Required] int StarRatingId,

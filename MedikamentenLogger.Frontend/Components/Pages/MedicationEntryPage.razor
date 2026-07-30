@@ -1,10 +1,13 @@
+@using MedikamentenLogger.Frontend.Clients
 @using MedikamentenLogger.Frontend.Components.Controls
 @using MedikamentenLogger.Frontend.Models
-@using MedikamentenLogger.Frontend.Clients
+@using MedikamentenLogger.Shared.Dtos.EntryDtos
+@using MedikamentenLogger.Shared.Dtos.RatingDtos
 
 @inject MedicationEntryService MedicationEntryService
 @inject MedicationCardService CardService
 @inject NavigationManager NavigationManager
+@inject NavigationState NVState
 @inject IJSRuntime JS
 
 @rendermode InteractiveServer
@@ -62,34 +65,70 @@ else
     private MedicationEntry? entry;
     private string medicationName = string.Empty;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        var originalEntry = MedicationEntryService.GetMedicationEntryByID(Id);
+        PageEntryDto? pageEntry = NVState.SelectedEntry;
+        OpenedEntryDto openedEntry = await MedicationEntryService.GetMedicationEntryByID(Id);
 
-        if (originalEntry is null)
+        if (openedEntry is null || pageEntry is null)
         {
             medicationName = "Unbekannt";
             return;
         }
 
+        List<StarRating> starRatings = [];
+
+        foreach (var rating in openedEntry.Ratings)
+        {
+            int id = 1;
+            StarRating starRating = new StarRating
+            {
+                Id = id,
+                Name = rating.Name,
+                Rating = rating.Rating,
+                DisplayOrder = rating.DisplayOrder
+            };
+
+            starRatings.Add(starRating);
+            id++;
+        }
+
         entry = new MedicationEntry
         {
-            Id = originalEntry.Id,
-            MedicationId = originalEntry.MedicationId,
-            Date = originalEntry.Date,
-            GeneralEffectiveness = originalEntry.GeneralEffectiveness,
-            GeneralSideEffects = originalEntry.GeneralSideEffects,
-            SpecificRatings = originalEntry.SpecificRatings,
-            UserNote = originalEntry.UserNote,
-            ImagePaths = originalEntry.ImagePaths
+            Id = pageEntry.Id,
+            MedicationId = pageEntry.MedicationId,
+            Date = pageEntry.Date,
+            GeneralEffectiveness = openedEntry.GeneralEffectiveness,
+            GeneralSideEffects = openedEntry.GeneralSideEffects,
+            SpecificRatings = starRatings,
+            UserNote = openedEntry.UserNote,
+            ImagePaths = []
         };
 
         medicationName = CardService.GetMedicationCardByID(entry.MedicationId)?.Name ?? "Unbekannt";
     }
 
-    private void HandleSubmit()
+    // Note for me: please fix this inefficient crap
+    private async Task HandleSubmit()
     {
-        MedicationEntryService.UpdateMedicationEntry(entry!);
+        EntryDetailsDto entryDetails = await MedicationEntryService.GetEntryDetailsDto(Id);
+
+        List<UpdateEntryRatingDto> updatedRatings = [];
+        int ratingId = 0;
+        foreach (var rating in entry!.SpecificRatings)
+        {
+            ratingId = entryDetails.SpecificRatings.First(e => e.Name == rating.Name).Id;
+            UpdateEntryRatingDto updatedRating = new(ratingId, rating.Rating);
+        }
+
+        UpdateEntryDto updateEntryDto = new(
+            entry.GeneralEffectiveness,
+            entry.GeneralSideEffects,
+            entry.UserNote,
+            updatedRatings
+        );
+
+        await MedicationEntryService.UpdateMedicationEntry(Id, updateEntryDto);
         ToLastPage();
     }
 

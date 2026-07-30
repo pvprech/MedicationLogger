@@ -1,5 +1,6 @@
 using MedikamentenLogger.Frontend.Clients;
 using MedikamentenLogger.Frontend.Components;
+using MedikamentenLogger.Frontend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
+var mlApiUrl = "http://localhost:8000";
+builder.Services.AddHttpClient<MedicationEntryService>(
+    client => client.BaseAddress = new Uri(mlApiUrl)
+);
+
+builder.Services.AddScoped<NavigationState>();
 builder.Services.AddSingleton<MedicationCardService>();
-builder.Services.AddSingleton<MedicationEntryService>();
 builder.Services.AddSingleton<StarRatingService>();
 
 var app = builder.Build();

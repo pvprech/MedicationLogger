@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MedikamentenLogger.Api.Dtos.EntryDtos;
+namespace MedikamentenLogger.Shared.Dtos.EntryDtos;
 
 public record CreateEntryDto(
     [Required] int MedicationId,

@@ -1,3 +1,5 @@
+using MedikamentenLogger.Shared.Dtos.RatingDtos;
+
 namespace MedikamentenLogger.Frontend.Models;
 
 public class MedicationEntry
